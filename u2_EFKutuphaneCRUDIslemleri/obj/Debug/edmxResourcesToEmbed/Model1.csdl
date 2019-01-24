@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="KutuphaneModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="IslemTablo">
+    <Key>
+      <PropertyRef Name="islemno" />
+    </Key>
+    <Property Name="islemno" Type="Int32" Nullable="false" />
+    <Property Name="ogrno" Type="Int32" />
+    <Property Name="kitapno" Type="Int32" />
+    <Property Name="atarih" Type="DateTime" Precision="0" />
+    <Property Name="vtarih" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="kitapTablo" Relationship="Self.FK_IslemTablo_kitapTablo1" FromRole="IslemTablo" ToRole="kitapTablo" />
+    <NavigationProperty Name="OgrenciTablo" Relationship="Self.FK_IslemTablo_OgrenciTablo1" FromRole="IslemTablo" ToRole="OgrenciTablo" />
+  </EntityType>
+  <EntityType Name="kitapTablo">
+    <Key>
+      <PropertyRef Name="kitapno" />
+    </Key>
+    <Property Name="kitapno" Type="Int32" Nullable="false" />
+    <Property Name="isbnno" Type="Int32" />
+    <Property Name="kitapadi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="yazarno" Type="Int32" />
+    <Property Name="turno" Type="Int32" />
+    <Property Name="sayfasayisi" Type="Int32" />
+    <Property Name="puan" Type="Int32" />
+    <NavigationProperty Name="IslemTabloes" Relationship="Self.FK_IslemTablo_kitapTablo1" FromRole="kitapTablo" ToRole="IslemTablo" />
+    <NavigationProperty Name="TurTablo" Relationship="Self.FK_kitapTablo_TurTablo1" FromRole="kitapTablo" ToRole="TurTablo" />
+    <NavigationProperty Name="YazarTablo" Relationship="Self.FK_kitapTablo_YazarTablo1" FromRole="kitapTablo" ToRole="YazarTablo" />
+  </EntityType>
+  <EntityType Name="OgrenciTablo">
+    <Key>
+      <PropertyRef Name="ogrno" />
+    </Key>
+    <Property Name="ogrno" Type="Int32" Nullable="false" />
+    <Property Name="ograd" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ogrsoyad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cinsiyet" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="dtarih" Type="DateTime" Precision="0" />
+    <Property Name="sinif" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="IslemTabloes" Relationship="Self.FK_IslemTablo_OgrenciTablo1" FromRole="OgrenciTablo" ToRole="IslemTablo" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="TurTablo">
+    <Key>
+      <PropertyRef Name="turno" />
+    </Key>
+    <Property Name="turno" Type="Int32" Nullable="false" />
+    <Property Name="turad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="kitapTabloes" Relationship="Self.FK_kitapTablo_TurTablo1" FromRole="TurTablo" ToRole="kitapTablo" />
+  </EntityType>
+  <EntityType Name="YazarTablo">
+    <Key>
+      <PropertyRef Name="yazarno" />
+    </Key>
+    <Property Name="yazarno" Type="Int32" Nullable="false" />
+    <Property Name="yazarad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="yazarsoyad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="kitapTabloes" Relationship="Self.FK_kitapTablo_YazarTablo1" FromRole="YazarTablo" ToRole="kitapTablo" />
+  </EntityType>
+  <Association Name="FK_IslemTablo_kitapTablo1">
+    <End Role="kitapTablo" Type="Self.kitapTablo" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="IslemTablo" Type="Self.IslemTablo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="kitapTablo">
+        <PropertyRef Name="kitapno" />
+      </Principal>
+      <Dependent Role="IslemTablo">
+        <PropertyRef Name="kitapno" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_IslemTablo_OgrenciTablo1">
+    <End Role="OgrenciTablo" Type="Self.OgrenciTablo" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="IslemTablo" Type="Self.IslemTablo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OgrenciTablo">
+        <PropertyRef Name="ogrno" />
+      </Principal>
+      <Dependent Role="IslemTablo">
+        <PropertyRef Name="ogrno" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_kitapTablo_TurTablo1">
+    <End Role="TurTablo" Type="Self.TurTablo" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="kitapTablo" Type="Self.kitapTablo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TurTablo">
+        <PropertyRef Name="turno" />
+      </Principal>
+      <Dependent Role="kitapTablo">
+        <PropertyRef Name="turno" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_kitapTablo_YazarTablo1">
+    <End Role="YazarTablo" Type="Self.YazarTablo" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="kitapTablo" Type="Self.kitapTablo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="YazarTablo">
+        <PropertyRef Name="yazarno" />
+      </Principal>
+      <Dependent Role="kitapTablo">
+        <PropertyRef Name="yazarno" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="KutuphaneEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="IslemTabloes" EntityType="Self.IslemTablo" />
+    <EntitySet Name="kitapTabloes" EntityType="Self.kitapTablo" />
+    <EntitySet Name="OgrenciTabloes" EntityType="Self.OgrenciTablo" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="TurTabloes" EntityType="Self.TurTablo" />
+    <EntitySet Name="YazarTabloes" EntityType="Self.YazarTablo" />
+    <AssociationSet Name="FK_IslemTablo_kitapTablo1" Association="Self.FK_IslemTablo_kitapTablo1">
+      <End Role="kitapTablo" EntitySet="kitapTabloes" />
+      <End Role="IslemTablo" EntitySet="IslemTabloes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_IslemTablo_OgrenciTablo1" Association="Self.FK_IslemTablo_OgrenciTablo1">
+      <End Role="OgrenciTablo" EntitySet="OgrenciTabloes" />
+      <End Role="IslemTablo" EntitySet="IslemTabloes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_kitapTablo_TurTablo1" Association="Self.FK_kitapTablo_TurTablo1">
+      <End Role="TurTablo" EntitySet="TurTabloes" />
+      <End Role="kitapTablo" EntitySet="kitapTabloes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_kitapTablo_YazarTablo1" Association="Self.FK_kitapTablo_YazarTablo1">
+      <End Role="YazarTablo" EntitySet="YazarTabloes" />
+      <End Role="kitapTablo" EntitySet="kitapTabloes" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
